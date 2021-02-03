@@ -42,23 +42,23 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             READ_REQUEST_CODE -> {
                 try {
-                    //val filePaths = mutableListOf<String>()
                     val uri = resultData?.data
                     if (uri != null) {
-                        //filePaths.add(uri.toString())
+                        //一枚選択時の動作
                         val inputStream = contentResolver?.openInputStream(uri)
                         val image = BitmapFactory.decodeStream(inputStream)
                         saveImage(image, 999)
                     } else {
+                        //複数枚選択時の動作
                         val clipData = resultData?.clipData
                         val clipItemCount = clipData?.itemCount
                         for (i in 0..clipItemCount!!) {
                             val item: ClipData.Item = clipData.getItemAt(i)
                             val itemUri: Uri = item.uri
-                            //filePaths.add(itemUri.toString())
                             val inputStream = contentResolver?.openInputStream(itemUri)
                             val image = BitmapFactory.decodeStream(inputStream)
                             saveImage(image, i)
+                            //実行できるが、エラーが発生する
                         }
                     }
                 } catch (e: Exception) {
